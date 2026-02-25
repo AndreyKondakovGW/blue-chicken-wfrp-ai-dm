@@ -1,6 +1,8 @@
 # Blue chicken WFRP AI DM
-An AI agent that helps the Dungeon Master interact with the rule books Warhammer Fantasy Roleplay (WFRP).  \
-This repo uses the smolagents package to build an AI agent that can answer questions regarding WFRP rule books.
+<div align="center">
+<img src="assets\icon1.jpg" width="200" height="200"> 
+</div>
+An AI agent that helps the Dungeon Master interact with the rule books Warhammer Fantasy Roleplay (WFRP). This repo uses the smolagents package to build an AI agent that can answer questions regarding WFRP rule books.
 
 ## Instalation
 
