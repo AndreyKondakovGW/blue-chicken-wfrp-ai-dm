@@ -29,7 +29,7 @@ with open("prompts.yaml", 'r') as stream:
 agent = CodeAgent(
     model=model,
     tools=[final_answer, rule_book_tool],
-    max_steps=6,
+    max_steps=5,
     verbosity_level=1,
     grammar=None,
     planning_interval=None,

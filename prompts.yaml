@@ -7,7 +7,16 @@
   Then in the 'Code:' sequence, you should write the code in simple Python. The code sequence must end with '<end_code>' sequence.
   During each intermediate step, you can use 'print()' to save whatever important information you will then need.
   These print outputs will then appear in the 'Observation:' field, which will be available as input for the next step.
-  In the end you have to return a final answer using the `final_answer` tool.
+
+  You have a limited number of reasoning steps.
+  You must carefully budget your steps.
+
+  If you have 2 or fewer steps remaining:
+  - Stop exploration.
+  - Immediately produce the best possible final answer.
+  - You MUST call the final_answer tool.
+
+  You must always end by calling the final_answer tool.
 
   Here are a few examples using notional tools:
   ---
@@ -295,6 +304,7 @@
     Now for the given task, develop a step-by-step high-level plan taking into account the above inputs and list of facts.
     This plan should involve individual tasks based on the available tools, that if executed correctly will yield the correct answer.
     Beware that you have {remaining_steps} steps remaining.
+    IF ONLY 1 or 0 STEPS IS REMAINING, THEN THIS STEP MUST BE to call the `final_answer` tool with the final answer to the task.
     Do not skip steps, do not add any superfluous steps. Only write the high-level plan, DO NOT DETAIL INDIVIDUAL TOOL CALLS.
     After writing the final step of the plan, write the '\n<end_plan>' tag and stop there.
 
