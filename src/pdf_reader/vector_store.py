@@ -1,7 +1,8 @@
 import os
+import re
 import argparse
 from langchain_community.vectorstores import FAISS
-from langchain_text_splitters import CharacterTextSplitter
+from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from src.pdf_reader.pdf_parser import PDFParser
 
 DATABASE_PATH = './databases'
@@ -9,7 +10,7 @@ DATABASE_PATH = './databases'
 class VectorStore:
     '''
     Class responsible to create FAISS vector store from a file (currently only PDF supported).
-    This class use CharacterTextSplitter from langchain.
+    This class use RecursiveCharacterTextSplitter from langchain.
     '''
     def __init__(self, 
         enbedding_model_name="mxbai-embed-large",
@@ -22,8 +23,10 @@ class VectorStore:
         except ImportError:
             print("To create embeddings of the pdf file Ollama pacakge is needed. Please writr instruction how to install Ollama in README file")
 
-        self.text_spliter = CharacterTextSplitter(separator='\n',
-                                        chunk_size=chunk_size, chunk_overlap=chunk_overlap,
+        self.text_spliter = RecursiveCharacterTextSplitter(
+                                        separators=["\n\n", "\n"],
+                                        chunk_size=chunk_size, 
+                                        chunk_overlap=chunk_overlap,
                                         length_function=len)
 
         self.embedder = OllamaEmbeddings(model=enbedding_model_name)
@@ -38,6 +41,15 @@ class VectorStore:
     def load_vectorstore(self, vectorstore_name):
         return FAISS.load_local(os.path.join(self.database_path, vectorstore_name), self.embedder, allow_dangerous_deserialization=True)
 
+    def split_text(self, text):
+
+        #better spliter with re for PDF files
+        # Remove multiple consecutive newlines and replace them with a single newline
+        text = re.sub(r"\n{3,}", "\n\n", text)
+
+        chunks = self.text_spliter.split_text(text)
+        return chunks
+
     def create_from_pdf(self, file_path, filename):
         "Create a vector store from a PDF file."
         _, file_extension = os.path.splitext(file_path)
@@ -45,7 +57,9 @@ class VectorStore:
             parser = PDFParser()
             file_text = parser.parse_file(file_path)
         file_chunks = self.split_text(file_text)
-
+        print(file_chunks[42])
+        print("-"*10)
+        print(file_chunks[60])
         print(f"{len(file_chunks)} chunks created from the PDF file.")
         return self.create_new_vectorstore(filename, file_chunks)
 

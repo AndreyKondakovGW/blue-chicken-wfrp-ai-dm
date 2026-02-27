@@ -1,4 +1,5 @@
 from smolagents import CodeAgent, HfApiModel,load_tool,tool
+from smolagents import LiteLLMModel
 import datetime
 import requests
 import pytz
@@ -20,6 +21,7 @@ model = HfApiModel(
     model_id='Qwen/Qwen2.5-Coder-32B-Instruct',# it is possible that this model may be overloaded
     custom_role_conversions=None,
 )
+
 
 with open("prompts.yaml", 'r') as stream:
     prompt_templates = yaml.safe_load(stream)

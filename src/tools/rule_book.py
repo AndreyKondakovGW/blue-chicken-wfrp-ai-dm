@@ -14,7 +14,7 @@ class RuleBookTool(Tool):
     output_type = "string"
 
     def forward(self, query: str, rule_book_name: str) -> str:
-        from src.pdf_reader.vecor_store import VectorStore
+        from src.pdf_reader.vector_store import VectorStore
         vector_store = VectorStore()
         vector_store = vector_store.load_vectorstore(rule_book_name)
 
