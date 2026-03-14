@@ -33,7 +33,9 @@ To create a token, you need to first create a Hugging Face account and then do t
 1) Get your Hugging Face token from https://hf.co/settings/tokens with permission for inference, if you don’t already have one
 2) Save your API token as a system variable: for Linux you can do this using this command: ``echo 'export HF_TOKEN="hf....."' >> ~/.bashrc source ~/.bashrc``. For Windows you should do ``$env:HF_TOKEN="hf....."`` in PowerShell and ``setx HF_TOKEN "hf....."`` for cmd
 ### Runing App
-To run the app, you just need to run ``python app.py``, this create Gradio Interface of the Chat in your browser.
+You can run the StreamLit App ``streamlit run Streamlit_UI.py``.
+Alternativly, you can run ``python app.py``, this create Gradio Interface of the Chat in your browser.
+
 
 ## Used Rule books 
 I currently used **Warhammer Fantasy Roleplay: Core Rulebook** and **Warhammer Fantasy Roleplay: Up in Arms Rulebook**. The vectorized version of this book you can find in the  ``./databases`` folder. The model was prescribed to use Core Rulebook in all cases unless it is not said to used Up in Arms.
