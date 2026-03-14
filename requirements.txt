@@ -6,3 +6,5 @@ langchain-ollama
 langchain-text-splitters
 requests
 pandas
+transformers
+pymupdf

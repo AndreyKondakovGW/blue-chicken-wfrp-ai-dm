@@ -5,6 +5,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from src.pdf_reader.pdf_parser import PDFParser
 
+
 DATABASE_PATH = './databases'
 
 class VectorStore:
@@ -14,8 +15,8 @@ class VectorStore:
     '''
     def __init__(self, 
         enbedding_model_name="mxbai-embed-large",
-        chunk_size=1024,
-        chunk_overlap=256,
+        chunk_size=128*4,
+        chunk_overlap=64*4,
         database_path=DATABASE_PATH
     ):
         try:
@@ -24,10 +25,10 @@ class VectorStore:
             print("To create embeddings of the pdf file Ollama pacakge is needed. Please writr instruction how to install Ollama in README file")
 
         self.text_spliter = RecursiveCharacterTextSplitter(
-                                        separators=["\n\n", "\n"],
                                         chunk_size=chunk_size, 
                                         chunk_overlap=chunk_overlap,
-                                        length_function=len)
+                                        length_function=len,
+                                        separators=["<p>", "\n\n", "\n", ". ", " ", ""])
 
         self.embedder = OllamaEmbeddings(model=enbedding_model_name)
         self.database_path = database_path
@@ -42,11 +43,10 @@ class VectorStore:
         return FAISS.load_local(os.path.join(self.database_path, vectorstore_name), self.embedder, allow_dangerous_deserialization=True)
 
     def split_text(self, text):
-
         #better spliter with re for PDF files
         # Remove multiple consecutive newlines and replace them with a single newline
         text = re.sub(r"\n{3,}", "\n\n", text)
-
+        text = re.sub(r"\n", " ", text)
         chunks = self.text_spliter.split_text(text)
         return chunks
 
@@ -56,11 +56,15 @@ class VectorStore:
         if file_extension == ".pdf":
             parser = PDFParser()
             file_text = parser.parse_file(file_path)
-        file_chunks = self.split_text(file_text)
-        print(file_chunks[42])
-        print("-"*10)
-        print(file_chunks[60])
-        print(f"{len(file_chunks)} chunks created from the PDF file.")
+        file_chunks = []
+        for page_num, page_text in file_text.items():
+            page_chunks = self.split_text(page_text)
+            page_chunks = [f"Page {page_num}: {chunk}" for chunk in page_chunks]
+            file_chunks.extend(page_chunks)
+            if page_num == 158:  # Print the chunks for page 158
+                print(page_text)
+
+        print(f"Created {len(file_chunks)} chunks from the PDF file.")
         return self.create_new_vectorstore(filename, file_chunks)
 
 if __name__ == "__main__":

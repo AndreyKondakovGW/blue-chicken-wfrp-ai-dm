@@ -6,6 +6,7 @@ class RuleBookTool(Tool):
     name = "rule_book"
     description = '''Searches the Warhammer Fantasy Roleplay 4th Edition core rulebook for relevant information.\
                     Use this to answer questions about the game rules, character creation, combat, magic, and more.\
+                    In answer you will see the number of page from which the information was taken this information was really important use it in you answer every time.\
                     '''
     inputs = {'query': {'type': 'string', 'description': 'The question or topic to search for in the rulebook.'},
             'rule_book_name': {'type': 'string', 'description': '''The name of the rulebook to search in.\
@@ -18,12 +19,13 @@ class RuleBookTool(Tool):
         vector_store = VectorStore()
         vector_store = vector_store.load_vectorstore(rule_book_name)
 
-        results = vector_store.similarity_search(query, k=2)
+        results = vector_store.similarity_search(query, k=4)
 
         if not results:
             return "No relevant information found in the rulebook."
 
         response = "Here are some relevant sections from the rulebook:\n\n"
+        
         for res in results:
             response += f"* {res.page_content} [{res.metadata}]\n\n"
 

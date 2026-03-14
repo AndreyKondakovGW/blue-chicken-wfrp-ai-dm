@@ -4,7 +4,7 @@ from smolagents.tools import Tool
 class FinalAnswerTool(Tool):
     name = "final_answer"
     description = "Provides a final answer to the given problem."
-    inputs = {'answer': {'type': 'any', 'description': 'Provides a final answer to the given problem. Provide final answer using Russian language.'}}
+    inputs = {'answer': {'type': 'any', 'description': 'Provides a final answer to the given problem. Provide final answer using Russian language. You shpuld say which page from the rule book you took this information from.'}}
     output_type = "any"
 
     def forward(self, answer: Any) -> Any:
