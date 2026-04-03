@@ -22,7 +22,4 @@ from src.streamlit_ui.app import StreamlitUI, main as _main
 __all__ = ["StreamlitUI", "stream_to_streamlit_messages", "StreamlitMessage", "_main"]
 
 if __name__ == "__main__":
-    # When run via `streamlit run Streamlit_UI.py`, Streamlit executes this
-    # file as a script, so this guard is triggered and we delegate to the
-    # real `main()` implementation in `src.streamlit_ui.app`.
     _main()
