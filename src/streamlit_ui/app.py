@@ -19,7 +19,7 @@ class StreamlitUI:
     The UI can operate in two modes:
     - **Agent + tools** (default): run the full `CodeAgent` with all tools.
     - **Rule book retriever only**: bypass the agent and directly call
-      `RuleBookTool.forward()` with the user question.
+    `RuleBookTool.forward()` with the user question.
 
     Typical entry point from the project root:
 

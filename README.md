@@ -4,6 +4,9 @@
 </div>
 An AI agent that helps the Dungeon Master interact with the rule books Warhammer Fantasy Roleplay (WFRP). This repo uses the smolagents package to build an AI agent that can answer questions regarding WFRP rule books.
 
+
+
+**!** Currently agent works on English mostly embedding model I use to search in rule book works only with english text. Agent on its own know how to speack different languages by the way so I set it up to translate final answer on Russian by default.
 ## Instalation
 
 ### Install Ollama on your device:
@@ -13,7 +16,7 @@ Ollama allows you to fast and efficiently use an embedding model that is used to
 ###  Pull the embedding model using Ollama.
 
 By default, you can use the mxbai-embed-large [model description](https://ollama.com/library/mxbai-embed-large). This model showed pretty good quality for English texts.  \
-Open your terminal and execute this command: \
+Open your terminal and execute this command:  \
 
 ``
 ollama pull mxbai-embed-large

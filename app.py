@@ -6,29 +6,27 @@ import pytz
 import yaml
 from src.tools.final_answer import FinalAnswerTool
 from src.tools.rule_book import RuleBookTool
+from src.tools.wfrpsu_itemlist import ItemListTool
 
 from src.Gradio_UI import GradioUI
 
 final_answer = FinalAnswerTool()
 rule_book_tool = RuleBookTool()
-
-# If the agent does not answer, the model is overloaded, please use another model or the following Hugging Face Endpoint that also contains qwen2.5 coder:
-# model_id='https://pflgm2locj2t89co.us-east-1.aws.endpoints.huggingface.cloud' 
+item_list_tool = ItemListTool()
 
 model = HfApiModel(
     max_tokens=2096,
     temperature=0.5,
-    model_id='Qwen/Qwen2.5-Coder-32B-Instruct',# it is possible that this model may be overloaded
+    model_id='Qwen/Qwen2.5-Coder-32B-Instruct',
     custom_role_conversions=None,
 )
-
 
 with open("prompts.yaml", 'r') as stream:
     prompt_templates = yaml.safe_load(stream)
     
 agent = CodeAgent(
     model=model,
-    tools=[final_answer, rule_book_tool],
+    tools=[final_answer, rule_book_tool, item_list_tool],
     max_steps=10,
     verbosity_level=1,
     grammar=None,
@@ -37,6 +35,5 @@ agent = CodeAgent(
     description=None,
     prompt_templates=prompt_templates
 )
-
 
 GradioUI(agent).launch()
