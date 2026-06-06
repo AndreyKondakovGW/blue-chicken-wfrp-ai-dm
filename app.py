@@ -21,7 +21,7 @@ model = HfApiModel(
     custom_role_conversions=None,
 )
 
-with open("prompts.yaml", 'r') as stream:
+with open("prompts_ru.yaml", 'r') as stream:
     prompt_templates = yaml.safe_load(stream)
     
 agent = CodeAgent(

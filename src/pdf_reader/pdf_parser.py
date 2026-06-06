@@ -7,14 +7,6 @@ class PDFParser:
     def __init__(self):
         pass
 
-    # def parse_file(self, file_path):
-    #     if os.path.exists(file_path):
-    #         reader = PdfReader(file_path)
-    #         return {i+1: p.extract_text() for i, p in enumerate(reader.pages)}
-    #     else:
-    #         print(file_path + " Not exist")
-    #         return ""
-
     def parse_file(self, pdf_path, tol=0.5):
         doc = fitz.open(pdf_path)
         pages_dict = {}

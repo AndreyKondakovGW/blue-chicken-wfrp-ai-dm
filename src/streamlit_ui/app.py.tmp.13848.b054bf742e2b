@@ -54,7 +54,6 @@ class StreamlitUI:
 
         st.session_state.setdefault("messages", [])
         st.session_state.setdefault("file_uploads_log", [])
-        st.session_state.setdefault("uploader_key", 0)
 
     @staticmethod
     def _append_user_prompt(prompt: str) -> str:
@@ -72,77 +71,29 @@ class StreamlitUI:
         """Main render loop for the chat UI."""
         import streamlit as st
 
-        st.set_page_config(page_title="WFRP AI DM", page_icon=":chicken:", layout="centered")
-        
+        st.set_page_config(page_title="WFRP AI DM", layout="centered")
         self._ensure_state()
         inject_global_css()
 
+        # Sidebar controls let the user choose between the full agent and
+        # a direct rule‑book retrieval call, plus which rule book to use.
         mode = st.sidebar.radio(
             "Response mode",
             options=["Agent + tools", "Rule book retriever only"],
             key="response_mode",
-            index=1
         )
 
-        available_books = _get_available_rule_books()
         rule_book_name = st.sidebar.selectbox(
             "Rule books",
-            options=available_books if available_books else ["(no databases found)"],
+            options=[ "WFRPG4E_ru", "up_in_arms_ru"],
+            index=0,
             key="rule_book_name",
         )
-        st.sidebar.subheader("Add new rule book")
+
         uploaded_pdf = st.sidebar.file_uploader(
-            "Upload PDF",
-            type=["pdf"],
-            key=f"pdf_upload_{st.session_state['uploader_key']}",
+            "Add new PDF file",
+            type=["pdf"]
         )
-        if uploaded_pdf is not None:
-            default_name = Path(uploaded_pdf.name).stem
-            new_book_name = st.sidebar.text_input(
-                "Vector store name", value=default_name, key="new_book_name"
-            )
-            if st.sidebar.button("Create vector store", type="primary"):
-                name = new_book_name.strip()
-                if not name:
-                    st.sidebar.error("Please provide a vector store name.")
-                else:
-                    tmp_path: Optional[str] = None
-                    try:
-                        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-                            tmp.write(uploaded_pdf.getvalue())
-                            tmp_path = tmp.name
-
-                        with st.status("Creating vector store…", expanded=True) as status:
-                            from src.pdf_reader.hybrid_rag_search import (
-                                HybridRetrival,
-                                PDFReader,
-                                OllamaEmbeddings,
-                            )
-
-                            st.write("Loading embedding model…")
-                            embedder = OllamaEmbeddings(model="bge-m3")
-
-                            st.write("Parsing PDF and splitting into chunks…")
-                            pdf_reader = PDFReader()
-                            chunks = pdf_reader.create_chunks_from_pdf(tmp_path, embedder)
-
-                            st.write(f"Indexing {len(chunks)} chunks (dense + sparse)…")
-                            db_path = str(PROJECT_ROOT / "databases")
-                            retrival = HybridRetrival(
-                                dense_embedder=embedder, database_path=db_path
-                            )
-                            retrival.create_new_vectorstore(name, chunks)
-
-                            status.update(label="Done!", state="complete")
-
-                        # Reset uploader and refresh the page so the new book appears.
-                        st.session_state["uploader_key"] += 1
-                        st.rerun()
-                    except Exception as exc:
-                        st.sidebar.error(f"Failed to create vector store: {exc}")
-                    finally:
-                        if tmp_path and os.path.exists(tmp_path):
-                            os.unlink(tmp_path)
 
         st.title("Blue chicken WFRP AI DM")
 

@@ -1,5 +1,4 @@
 smolagents==1.13.0
-gradio==6.6.0
 streamlit==1.54.0
 langchain
 langchain-community
@@ -10,3 +9,7 @@ pandas
 transformers
 pymupdf
 RapidFuzz
+rank_bm25
+sentence-transformers
+nltk
+beautifulsoup4

@@ -72,16 +72,16 @@ class StreamlitUI:
         """Main render loop for the chat UI."""
         import streamlit as st
 
-        st.set_page_config(page_title="WFRP AI DM", page_icon=":chicken:", layout="centered")
-        
+        st.set_page_config(page_title="WFRP AI DM", layout="centered")
         self._ensure_state()
         inject_global_css()
 
+        # Sidebar controls let the user choose between the full agent and
+        # a direct rule‑book retrieval call, plus which rule book to use.
         mode = st.sidebar.radio(
             "Response mode",
             options=["Agent + tools", "Rule book retriever only"],
             key="response_mode",
-            index=1
         )
 
         available_books = _get_available_rule_books()
@@ -90,6 +90,9 @@ class StreamlitUI:
             options=available_books if available_books else ["(no databases found)"],
             key="rule_book_name",
         )
+
+        # --- Add new rule book from PDF ---
+        st.sidebar.markdown("---")
         st.sidebar.subheader("Add new rule book")
         uploaded_pdf = st.sidebar.file_uploader(
             "Upload PDF",

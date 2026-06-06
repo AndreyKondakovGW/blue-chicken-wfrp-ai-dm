@@ -89,13 +89,19 @@ def load_item_info(html):
 
 class ItemListTool(Tool):
     name = "item_list"
-    description = '''Searches insidd Item and Ability lists form wfrp.su website.\
-                    Use this to answer questions about the weapon stats traits and cost amd descriptions for spells and talants \
-                    !Items and abilites description will be written using Russian language!
+    description = '''Ищет информацию в списках предметов и способностей на сайте wfrp.su.
+            Используй этот инструмент для получения характеристик оружия, трейтов, стоимости, а также описаний заклинаний и талантов.
+            Важно: описания предметов и способностей представлены на русском языке.
                     '''
-    inputs = {'item_name': {'type': 'string', 'description': 'The name you want to ask information about.'},
-            'item_list_name': {'type': 'string', 'description': '''The name of item list you can search information in. Here is avaliable lists:\
-                            witem-melee-weapon for melee weapon, item-ranged-weapon for ranged weapon, talent for character talents, spells for magic spells, miracle for priests miracles'''}}
+    inputs = {'item_name': {'type': 'string', 'description': 'Название объекта, по которому требуется информация.'},
+            'item_list_name': {'type': 'string', 'description': '''- 'item_name': строка, название объекта, по которому требуется информация.
+            - 'item_list_name': строка, имя списка, в котором производится поиск.
+            Доступные списки:
+            - witem-melee-weapon — оружие ближнего боя
+            - item-ranged-weapon — оружие дальнего боя
+            - talent — таланты персонажей
+            - spells — магические заклинания
+            - miracle — чудеса жрецов'''}}
     output_type = "string"
 
     def forward(self, item_name: str, item_list_name: str) -> str:

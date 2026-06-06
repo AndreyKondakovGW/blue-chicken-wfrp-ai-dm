@@ -7,7 +7,7 @@ from .types import MessageContent, StreamlitMessage
 # Default avatars for chat messages. The agent avatar path can be overridden by
 # the top‑level runner if it wants to use a custom image instead of an emoji.
 AGENT_AVATAR_DEFAULT = "🤖"
-USER_AVATAR = "🧑"
+USER_AVATAR = "👤"
 
 
 def _render_content(content: MessageContent) -> None:
@@ -82,7 +82,6 @@ def render_messages(messages: List[StreamlitMessage], agent_avatar: str | None =
         with st.chat_message("assistant", avatar=avatar):
             if title:
                 st.markdown(f"**{title}**")
-            print(f"Rendering assistant message with content: {msg.content}")
             _render_content(msg.content)
         i += 1
 
