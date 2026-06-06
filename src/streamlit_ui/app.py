@@ -219,7 +219,7 @@ def build_default_agent() -> MultiStepAgent:
             custom_role_conversions=None,
         )
 
-        prompts_path = PROJECT_ROOT / "prompts.yaml"
+        prompts_path = PROJECT_ROOT / "prompts_ru.yaml"
         with prompts_path.open("r", encoding="utf-8") as stream:
             prompt_templates = yaml.safe_load(stream)
 
