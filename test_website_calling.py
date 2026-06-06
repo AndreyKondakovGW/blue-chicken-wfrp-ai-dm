@@ -7,8 +7,7 @@ import pandas as pd
 from src.tools.wfrpsu_itemlist import ItemListTool
 
 il = ItemListTool()
-talants = """быстрая реакция, грамотность, меткость, непреклонность, прирождённый воин, рокировка, фортуна, 
-чтение по губам, шестое чувство"""
+talants = """Гномий двуручный молот"""
 for t in talants.split(','):
-    info = il.forward(item_name=t, item_list_name="talent")
+    info = il.forward(item_name=t, item_list_name="item-melee-weapon")
     print(info)

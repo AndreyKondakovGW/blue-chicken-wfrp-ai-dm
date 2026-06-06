@@ -97,7 +97,7 @@ class ItemListTool(Tool):
             'item_list_name': {'type': 'string', 'description': '''- 'item_name': строка, название объекта, по которому требуется информация.
             - 'item_list_name': строка, имя списка, в котором производится поиск.
             Доступные списки:
-            - witem-melee-weapon — оружие ближнего боя
+            - item-melee-weapon — оружие ближнего боя
             - item-ranged-weapon — оружие дальнего боя
             - talent — таланты персонажей
             - spells — магические заклинания
